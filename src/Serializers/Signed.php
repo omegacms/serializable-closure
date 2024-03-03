@@ -50,7 +50,7 @@ class Signed implements SerializableInterface
      *
      * @var ?SignerInterface $signer Holds the current signer object or null.
      */
-    public static ?SignerInterface $signer;
+    public static ?SignerInterface $signer = null;
 
     /**
      * The closure to be serialized/unserialized.
