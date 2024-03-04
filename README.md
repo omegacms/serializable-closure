@@ -28,7 +28,7 @@ To install the package, add the following to your `composer.json` file:
 
 Then run:
 
-```json
+```sh
 composer install
 ```
 

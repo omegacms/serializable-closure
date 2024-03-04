@@ -80,35 +80,35 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * The code of the closure.
      *
-     * @var string $code Holds the code of the closure.
+     * @var ?string $code Holds the code of the closure or null.
      */
-    protected string $code;
+    protected ?string $code = null;
 
     /**
      * The tokenn extracted from the closure's code.
      *
-     * @var array $tokens Holds the tokenn extracted from the closure's code.
+     * @var ?array $tokens Holds the tokenn extracted from the closure's code or null.
      */
-    protected array $tokens;
+    protected ?array $tokens = null;
 
     /**
      * Hashed name of the closuee.
      *
-     * @var string $hashedName Holds the hashed name of the closure.
+     * @var ?string $hashedName Holds the hashed name of the closure or null.
      */
-    protected string $hashedName;
+    protected ?string $hashedName = null;
 
     /**
      * Array of variables used in the closure.
      *
-     * @var array $useVariables Holds an array of varibles used in the closure.
+     * @var ?array $useVariables Holds an array of varibles used in the closure or null.
      */
-    protected array $useVariables;
+    protected ?array $useVariables = null;
 
     /**
      * Indicates whether the closuee is static or not.
      *
-     * @var bool $isStaticClosure Indicates whether the closuee is static or not.
+     * @var bool $isStaticClosure Indicates whether the closuee is static or not .
      */
     protected bool $isStaticClosure;
 

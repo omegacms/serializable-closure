@@ -33,10 +33,9 @@ use Omega\SerializableClosure\Exceptions\MissingSecretKeyException;
 
 /**
  * Signed class for serializable closures with signature verification.
- * *
- * * This class implements the SerializableInterface and adds functionality
- * * to sign and verify the signature of the closure during serialization.
- * *
+ *
+ * This class implements the SerializableInterface and adds functionality
+ * to sign and verify the signature of the closure during serialization.
  *
  * @category    Omega
  * @package     Omega\SerializableClosure
@@ -118,7 +117,6 @@ class Signed implements SerializableInterface
      * @return void
      * @throws InvalidSignatureException If the signature is invalid.
      */
-    public
     public function __unserialize( array $signature ) : void
     {
         if ( static::$signer && ! static::$signer->verify( $signature ) ) {
