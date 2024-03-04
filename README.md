@@ -10,6 +10,14 @@ The package introduces two main classes: `SerializableClosure` and `UnsignedSeri
 
 - **`UnsignedSerializableClosure`**: This class is suitable for closures that don't require a secret key for signing. It provides a straightforward way to serialize closures without additional security measures.
 
+### ⚠️ Experimental Feature: Serialization of Anonymous Functions
+
+**Caution: This feature is experimental!** We've added support for the serialization of anonymous functions, but it comes with a warning. This feature is considered experimental, and we recommend using it only if you fully understand its implications.
+
+Anonymous function serialization involves intricacies and potential risks, and its usage should be approached with caution. If you're unsure about the consequences or don't specifically need this functionality, it's advisable to stick to serializing named functions or closures.
+
+Before incorporating this feature into your code, ensure you are aware of the implications and are comfortable handling any potential issues that might arise. Proceed with caution!
+
 ## Requirements
 
 * PHP 8.2 or later
@@ -71,6 +79,60 @@ $unserialized = unserialize( $serialized )->getClosure();
 
 // Invoke the closure
 echo $unserialized( 'hello' ); // Output: HELLO
+```
+
+Example 3: Using `SerializableClosure` with `Signing` and anonymous functions.
+
+```php
+use Omega\SerializableClosure\SerializableClosure;
+
+// Create a closure.
+$closure = function() {
+    $anonymousClass = new class {
+        public function getMessage() : string {
+            return "Helloo from anonymous class!";
+        }
+    };
+    
+    return $anonymousClass->getMessage();
+};
+
+// Serialize
+$serialized = serialize( new SerializableClosure( $closure ) );
+
+// Unserialize
+$unserializedClosure = unserialize( $serialized );
+
+//Invoke the closure
+$result = $unserializedClosure();
+
+echo $result; // Output: Hello from anonymous class!
+```
+
+Example 4: UsUsing `UnsignedSerializableClosure` and `anonymous functions`.
+
+```php
+use Omega\SerializableClosure\UnsignedSerializableClosure;
+
+// Create a closure
+$anonymousFunction = function( $name ) {
+    return "Hello, $name!";
+};
+
+// Create UnsignedSerializableClosure
+$unsignedClosure = new UnsignedSerializableClosure( $anonymousFunction );
+
+ // Serialize
+ $serialized = serialize( $unsignedClosure );
+ 
+ // Deserialize
+ $unserialized = unserialize( $serialized );
+ 
+ // Invoke the closure
+ $result = $unserializedClosure( "Jhon" );
+ 
+ // Echo the closure
+ echo $result; // Output: Hello, Jhon!
 ```
 
 ## Contributing
