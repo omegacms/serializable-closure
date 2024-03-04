@@ -19,7 +19,9 @@ declare( strict_types = 1 );
 namespace Omega\SerializableClosure\Signers;
 
 /**
- * Signer interface,
+ * Signer interface.
+ *
+ * The `SignerInterface` defines methods for signing and verifying serialized closures.
  *
  * @category    Omega
  * @package     Omega\SerializableClosure
@@ -33,18 +35,18 @@ namespace Omega\SerializableClosure\Signers;
 interface SignerInterface
 {
     /**
-     * Sign the given serializable.
+     * Sign the given serializable data.
      *
-     * @param  string  $serializable
-     * @return array
+     * @param  string $serializable Holds the serializable data to be signed.
+     * @return array Return an array containing the signature.
      */
     public function sign( string $serializable ) : array;
 
     /**
      * Verify the given signature.
      *
-     * @param  array  $signature
-     * @return bool
+     * @param  array $signature Holds the signature to be verified.
+     * @return bool Return true if the signature is valid, false otherwise.
      */
     public function verify( array $signature ) : bool;
 }

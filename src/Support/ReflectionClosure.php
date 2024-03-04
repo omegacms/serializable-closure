@@ -61,6 +61,11 @@ use ReflectionFunction;
 /**
  * Reflection closure class.
  *
+ * The `ReflectionClosure` class extends `ReflectionFunction` and provides additional functionality
+ * for analyzing closures. It includes methods to check if a closure is "static" or a "short closure"
+ * and retrieves the closure's code. The class also extracts information about files, classes, functions,
+ * constants, and structures used within the closure.
+ *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @subpackage  Omega\SerializableClosure\Support
@@ -72,37 +77,113 @@ use ReflectionFunction;
  */
 class ReflectionClosure extends ReflectionFunction
 {
-    protected $code;
-    protected $tokens;
-    protected $hashedName;
-    protected $useVariables;
-    protected $isStaticClosure;
+    /**
+     * The code of the closure.
+     *
+     * @var string $code Holds the code of the closure.
+     */
+    protected string $code;
+
+    /**
+     * The tokenn extracted from the closure's code.
+     *
+     * @var array $tokens Holds the tokenn extracted from the closure's code.
+     */
+    protected array $tokens;
+
+    /**
+     * Hashed name of the closuee.
+     *
+     * @var string $hashedName Holds the hashed name of the closure.
+     */
+    protected string $hashedName;
+
+    /**
+     * Array of variables used in the closure.
+     *
+     * @var array $useVariables Holds an array of varibles used in the closure.
+     */
+    protected array $useVariables;
+
+    /**
+     * Indicates whether the closuee is static or not.
+     *
+     * @var bool $isStaticClosure Indicates whether the closuee is static or not.
+     */
+    protected bool $isStaticClosure;
+
+    /**
+     * Indicates whether the closure requires scope.
+     *
+     * @var bool $isScopeRequired Indicates whether the closure requires scope.
+     */
     protected $isScopeRequired;
+
+    /**
+     * Indicates whether the closure requires binding.
+     *
+     * @var bool $isBindingRequired Indicates whether the closure requires binding.
+     */
     protected $isBindingRequired;
+
+    /**
+     * Indicates whether the closure is a short closure or not.
+     *
+     * @var bool $isShortClosure Indicates whether the closure is a short closure or not.
+     */
     protected $isShortClosure;
 
+    /**
+     * Related information array.
+     *
+     * @var array $files Holds an array of related information.
+     */
     protected static array $files = [];
+
+    /**
+     * Class related information array.
+     *
+     * @var array $classes Holds an array of class-related information.
+     */
     protected static array $classes = [];
+
+    /**
+     * Functions related information array.
+     *
+     * @var array $functions Holds an array of functions-related information.
+     */
     protected static array $functions = [];
+
+    /**
+     * Contstants related information array.
+     *
+     * @var array $constants Holds an array of constants-related information.
+     */
     protected static array $constants = [];
+
+    /**
+     * Structures related information array.
+     *
+     * @var array $structures Holds an array of structures-related information.
+     */
     protected static array $structures = [];
 
     /**
      * Creates a new reflection closure instance.
      *
-     * @param \Closure $closure
-     * @param string|null $code
+     * @param  Closure $closure Holds the current reflection closure instance.
+     * @param  ?string $code    Holds the code of the closure.
      * @return void
      */
-    public function __construct(Closure $closure, $code = null)
+    public function __construct( Closure $closure, ?string $code = null )
     {
-        parent::__construct($closure);
+        parent::__construct( $closure );
     }
 
     /**
      * Checks if the closure is "static".
      *
-     * @return bool
+     * @return bool Return true if the closure is static, false if not.
      */
     public function isStatic(): bool
     {
@@ -116,7 +197,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Checks if the closure is a "short closure".
      *
-     * @return bool
+     * @return bool Return true if the closure is short closure, false if not.
      */
     public function isShortClosure() : bool
     {
@@ -136,7 +217,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get the closure's code.
      *
-     * @return string
+     * @return string Return the current closure code.
      */
     public function getCode() : string
     {
@@ -771,7 +852,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get PHP native built in types.
      *
-     * @return array
+     * @return array Return an array of native PHO built in types.
      */
     protected static function getBuiltinTypes() : array
     {
@@ -799,7 +880,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Gets the use variables by the closure.
      *
-     * @return array
+     * @return array Return an array of use variables by the closure.
      */
     public function getUseVariables() : array
     {
@@ -840,7 +921,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Checks if binding is required.
      *
-     * @return bool
+     * @return bool Return true if bindings is required, false if not.
      */
     public function isBindingRequired() : bool
     {
@@ -854,7 +935,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Checks if access to the scope is required.
      *
-     * @return bool
+     * @return bool Return true if the access to the scope is requird, false if not.
      */
     public function isScopeRequired() : bool
     {
@@ -866,9 +947,9 @@ class ReflectionClosure extends ReflectionFunction
     }
 
     /**
-     * The the hash of the current file name.
+     * The hash of the current file name.
      *
-     * @return string
+     * @return string Return the ash for the current file name.
      */
     protected function getHashedFileName() : string
     {
@@ -882,7 +963,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get the file tokens.
      *
-     * @return array
+     * @return array Return an arry of file tokens.
      */
     protected function getFileTokens() : array
     {
@@ -898,7 +979,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get the tokens.
      *
-     * @return array
+     * @return array Return an array of the tokens.
      */
     protected function getTokens() : array
     {
@@ -941,7 +1022,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get the classes.
      *
-     * @return array
+     * @return array Return a n array of classes.
      */
     protected function getClasses() : array
     {
@@ -957,7 +1038,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get the functions.
      *
-     * @return array
+     * @return array Return an array of the functions.
      */
     protected function getFunctions() : array
     {
@@ -973,7 +1054,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Gets the constants.
      *
-     * @return array
+     * @return array Return an array of the constants.
      */
     protected function getConstants() : array
     {
@@ -989,7 +1070,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get the structures.
      *
-     * @return array
+     * @return array Return an array of the structures.
      */
     protected function getStructures() : array
     {
@@ -1223,7 +1304,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Returns the namespace associated to the closure.
      *
-     * @return string
+     * @return string Return the namespace associated to the closure.
      */
     protected function getClosureNamespaceName() : string
     {
@@ -1240,8 +1321,8 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Parse the given token.
      *
-     * @param  string $token
-     * @return array
+     * @param  string $token Holds the tokens to parse.
+     * @return array Return an array of parsed tokens.
      */
     protected function parseNameQualified( string $token ) : array
     {

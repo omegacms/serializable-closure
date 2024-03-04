@@ -21,6 +21,8 @@ namespace Omega\SerializableClosure\Support;
 /**
  * Self reference class.
  *
+ * The `SelfReference` class providing functionality for creating a self-reference instance.
+ *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @subpackage  Omega\SerializableClosure\Support
@@ -45,7 +47,7 @@ class SelfReference
      * @param  string $hash Holds the unique hash representing the object.
      * @return void
      */
-    public function __construct( string $hash ) : void
+    public function __construct( string $hash )
     {
         $this->hash = $hash;
     }

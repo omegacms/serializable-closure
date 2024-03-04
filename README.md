@@ -1,6 +1,14 @@
 # Serializable Closure Package
 
-The Serializable Closure package provides easy and secure way to **serialize closure in PHP**
+The Serializable Closure package provides a convenient and secure way to serialize closures in PHP. It allows you to serialize and unserialize closures, preserving their state and functionality even across different PHP processes. This can be particularly useful in scenarios where closures need to be stored and retrieved, such as in caching mechanisms or queue systems.
+
+## How it Works
+
+The package introduces two main classes: `SerializableClosure` and `UnsignedSerializableClosure`.
+
+- **`SerializableClosure`**: This class is designed for closures that require additional security measures. It supports signed serialization, which means the closure is associated with a secret key for added security. The signer used is configurable through the `setSecretKey` method.
+
+- **`UnsignedSerializableClosure`**: This class is suitable for closures that don't require a secret key for signing. It provides a straightforward way to serialize closures without additional security measures.
 
 ## Requirements
 
@@ -8,7 +16,7 @@ The Serializable Closure package provides easy and secure way to **serialize clo
 
 ## Installation via Composer
 
-Add `"omegacms/serializable-closure": "^1.0.0"` to the require block in your `composer.json` file and then run `composer install`.
+To install the package, add the following to your `composer.json` file:
 
 ```json
 {
@@ -18,43 +26,52 @@ Add `"omegacms/serializable-closure": "^1.0.0"` to the require block in your `co
 }
 ```
 
-Alternatively, you can simply run the folowing from the command line:
+Then run:
 
-```sh
-composer require omegacms/serializable-closure "^1.0.0"
+```json
+composer install
 ```
 
-If you want to include the test sources, use:
+## Getting Started
 
-```sh
-composer require --prefer-source omegacms/serializable-closure "^1.0.0"
-```
-
-## Basic Usage
-
-You may serialize a closure this way:
+Example 1: Using `SerializableClosure` with `Signing`.
 
 ```php
 use Omega\SerializableClosure\SerializableClosure;
 
-$closure = fn() => 'YOUR_STRING';
+// Create a closure.
+$closure = fn() => 'YOUR_STRING_HERE';
 
-// Secure the serialize.
+// Set a secret key for signing.
 SerializableClosure::setSecretKey( 'secret' );
 
-// Serialize
+// Serialize the closure
 $serialized = serialize( new SerializableClosure( $closure ) );
 
-// Unserialize
+// Unserialize and get the closure.
 $closure    = unserialize( $serialized )->getClosure();
 
 // Print result.
-echo $closure();
+echo $closure(); // Output: YOUR_STRING_HERE
 ```
 
-## Documentation
+Example 2: Using `UnsignedSerializableClosure`.
 
-Work in progress
+```php
+use Omega\SerializableClosure\UnsignedSerializableClosure;
+
+// Create a closure
+$closure = fn( $value ) => strtoupper( $value );
+
+// Serialize the closure
+$serialized = serialize( new UnsignedSerializableClosure( $closure ) );
+
+// Unserialize and get the closure
+$unserialized = unserialize( $serialized )->getClosure();
+
+// Invoke the closure
+echo $unserialized( 'hello' ); // Output: HELLO
+```
 
 ## Contributing
 

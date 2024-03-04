@@ -24,7 +24,10 @@ namespace Omega\SerializableClosure\Serializers;
 use Closure;
 
 /**
- * Serializable interface.
+ * Interface for serializable closures in Omega CMS.
+ *
+ * The `SerializableInterface` defines methods that should be implemented by classes
+ * aiming to serialize closures in Omega CMS.
  *
  * @category    Omega
  * @package     Omega\SerializableClosure
@@ -40,14 +43,14 @@ interface SerializableInterface
     /**
      * Resolve the closure with the given arguments.
      *
-     * @return mixed
+     * @return mixed Return the result of the closure invocation.
      */
     public function __invoke() : mixed;
 
     /**
      * Gets the closure that got serialized/unserialized.
      *
-     * @return Closure Return the Closure.
+     * @return Closure Return the serialized/unserialized closure.
      */
     public function getClosure() : Closure;
 }

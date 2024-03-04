@@ -30,6 +30,10 @@ use Omega\SerializableClosure\Serializers\Native;
 /**
  * Unsigned serializable closure class.
  *
+ * The `UnsignedSerializableClosure` class implements an unsigned serializable closure, allowing
+ * closures to be serialized without cryptographic signatures. This class provides methods to create,
+ * resolve, and serialize closures.
+ *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @link        https://omegacms.github.io
@@ -50,7 +54,7 @@ class UnsignedSerializableClosure
     /**
      * Creates a new serializable closure instance.
      *
-     * @param  Closure $closure
+     * @param  Closure $closure Holds the current Closure object.
      * @return void
      */
     public function __construct( Closure $closure )
@@ -71,7 +75,7 @@ class UnsignedSerializableClosure
     /**
      * Gets the closure.
      *
-     * @return Closure
+     * @return Closure Return the original closure.
      */
     public function getClosure() : Closure
     {
@@ -81,7 +85,7 @@ class UnsignedSerializableClosure
     /**
      * Get the serializable representation of the closure.
      *
-     * @return array
+     * @return array Return an array of serializable representation of the closure.
      */
     public function __serialize() : array
     {
@@ -93,7 +97,7 @@ class UnsignedSerializableClosure
     /**
      * Restore the closure after serialization.
      *
-     * @param  array $data
+     * @param  array $data Holds an array of the closure data for restore.
      * @return void
      */
     public function __unserialize( array $data ) : void

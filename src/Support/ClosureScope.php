@@ -26,6 +26,10 @@ use SplObjectStorage;
 /**
  * Closure scope class.
  *
+ * The `ClosureScope` class manages the serialization scope for closures,
+ * keeping track of the number of serializations and closures that need to
+ * be serialized within the current scope.
+ * *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @subpackage  Omega\SerializableClosure\Support

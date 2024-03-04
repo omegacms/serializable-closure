@@ -33,6 +33,11 @@ use Omega\SerializableClosure\Signers\Hmac;
 /**
  * Serializable closure class.
  *
+ * The `SerializableClosure` class provides a flexible mechanism for serializing closures
+ * with the option to use cryptographic signatures for integrity verification. This class
+ * supports both signed and unsigned closures. The signed closures utilize HMAC (Hash-based
+ * Message Authentication Code) for signature generation.
+ *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @link        https://omegacms.github.io
@@ -53,7 +58,7 @@ class SerializableClosure
     /**
      * Creates a new serializable closure instance.
      *
-     * @param  Closure  $closure
+     * @param  Closure  $closure Holds the current closure object.
      * @return void
      */
     public function __construct( Closure $closure )
@@ -76,7 +81,7 @@ class SerializableClosure
     /**
      * Gets the closure.
      *
-     * @return Closure
+     * @return Closure Return the current closure objecy.
      */
     public function getClosure() : Closure
     {
@@ -86,7 +91,8 @@ class SerializableClosure
     /**
      * Create a new unsigned serializable closure instance.
      *
-     * @param  Closure  $closure
+     * @param  Closure $closure Holds the current closure instance.
+     * @return UnsignedSerializableClosure Return a new instance of UnsignedSerializableClosure.
      */
     public static function unsigned( Closure $closure ) : UnsignedSerializableClosure
     {
@@ -96,7 +102,7 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param  ?string $secret
+     * @param  ?string $secret Holds the secret code to set.
      * @return void
      */
     public static function setSecretKey( ?string $secret ) : void
@@ -109,7 +115,7 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param  ?Closure $transformer
+     * @param  ?Closure $transformer Holds the current closure instance for transformer.
      * @return void
      */
     public static function transformUseVariablesUsing( ?Closure $transformer ) : void
@@ -120,7 +126,7 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param  ?Closure $resolver
+     * @param  ?Closure $resolver Holds the current closure instance for resolver.
      * @return void
      */
     public static function resolveUseVariablesUsing( ?Closure $resolver ) : void
@@ -131,7 +137,7 @@ class SerializableClosure
     /**
      * Get the serializable representation of the closure.
      *
-     * @return array
+     * @return array Return an array of the serialized repreentation of the closure.
      */
     public function __serialize() : array
     {
@@ -143,9 +149,9 @@ class SerializableClosure
     /**
      * Restore the closure after serialization.
      *
-     * @param  array $data
+     * @param  array $data Holds an array of the closure data for restore.
      * @return void
-     * @throws InvalidSignatureException
+     * @throws InvalidSignatureException if the signature is not valid.
      */
     public function __unserialize( array $data ) : void
     {

@@ -21,6 +21,11 @@ namespace Omega\SerializableClosure\Signers;
 /**
  * Hmac class.
  *
+ *
+ *
+ * The `Hmac` class implements the SignerInterface for signing and verifying serialized
+ * closures using HMAC.
+ *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @subpackage  Omega\SerializableClosure\Signers
@@ -42,7 +47,7 @@ class Hmac implements SignerInterface
     /**
      * Creates a new signer instance.
      *
-     * @param  string $secret
+     * @param  string $secret Holds the secret key to use for HMAC.
      * @return void
      */
     public function __construct( string $secret )
@@ -53,8 +58,8 @@ class Hmac implements SignerInterface
     /**
      * @inheritdoc
      *
-     * @param  string $serialized
-     * @return array
+     * @param  string $serializable Holds the serializable data to be signed.
+     * @return array Return an array containing the signature.
      */
     public function sign( string $serialized ) : array
     {
@@ -67,8 +72,8 @@ class Hmac implements SignerInterface
     /**
      * @inheritdoc
      *
-     * @param  array $signature
-     * @return bool
+     * @param  array $signature Holds the signature to be verified.
+     * @return bool Return true if the signature is valid, false otherwise.
      */
     public function verify( array $signature ) : bool
     {

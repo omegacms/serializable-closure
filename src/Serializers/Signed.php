@@ -32,7 +32,11 @@ use Omega\SerializableClosure\Exceptions\InvalidSignatureException;
 use Omega\SerializableClosure\Exceptions\MissingSecretKeyException;
 
 /**
- * Signed class.
+ * Signed class for serializable closures with signature verification.
+ * *
+ * * This class implements the SerializableInterface and adds functionality
+ * * to sign and verify the signature of the closure during serialization.
+ * *
  *
  * @category    Omega
  * @package     Omega\SerializableClosure
@@ -62,7 +66,7 @@ class Signed implements SerializableInterface
     /**
      * Creates a new serializable closure instance.
      *
-     * @param  Closure  $closure
+     * @param  Closure $closure Holds the closure to be serialized/unserialized.
      * @return void
      */
     public function __construct( Closure $closure )
@@ -73,7 +77,7 @@ class Signed implements SerializableInterface
     /**
      * @inheritdoc
      *
-     * @return mixed
+     * @return mixed Return the result of the closure invoction.
      */
     public function __invoke() : mixed
     {
@@ -83,7 +87,7 @@ class Signed implements SerializableInterface
     /**
      * @inheritdoc
      *
-     * @return Closure Return the Closure.
+     * @return Closure Return the Closure instance.
      */
     public function getClosure() : Closure
     {
@@ -93,7 +97,8 @@ class Signed implements SerializableInterface
     /**
      * Get the serializable representation of the closure.
      *
-     * @return array
+     * @return array Return the serialized representation of the closure.
+     * @throws MissingSecretKeyException If no signer is specified.
      */
     public function __serialize() : array
     {
@@ -109,10 +114,11 @@ class Signed implements SerializableInterface
     /**
      * Restore the closure after serialization.
      *
-     * @param  array  $signature
+     * @param  array $signature Holds the signature to verify and unserialize.
      * @return void
-     * @throws InvalidSignatureException
+     * @throws InvalidSignatureException If the signature is invalid.
      */
+    public
     public function __unserialize( array $signature ) : void
     {
         if ( static::$signer && ! static::$signer->verify( $signature ) ) {

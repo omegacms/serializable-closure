@@ -26,6 +26,9 @@ use Exception;
 /**
  * Invalid signature exception class.
  *
+ * THe `InvalidSignatursException` clss thrown when the signature of a serialized closure
+ * is invalid or modified.
+ *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @subpackage  Omega\SerializableClosure\Exceptions
@@ -38,9 +41,9 @@ use Exception;
 class InvalidSignatureException extends Exception
 {
     /**
-     * Create a new exception instance.
+     * InvalidSignatureException constructor.
      *
-     * @param  string  $message Holds the Exception message to throw.
+     * @param  string $message Holds the exception message to throw.
      * @return void
      */
     public function __construct( string $message = 'Your serialized closure might have been modified or it\'s unsafe to be unserialized.' )

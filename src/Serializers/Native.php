@@ -41,7 +41,10 @@ use stdClass;
 use UnitEnum;
 
 /**
- * Native class.
+ * Native class for serializing closures without signature verification.
+ *
+ * The `Native` class implements the SerializableInterface and provides
+ * functionality for serializing and unserializing closures.
  *
  * @category    Omega
  * @package     Omega\SerializableClosure
@@ -57,7 +60,7 @@ class Native implements SerializableInterface
     /**
      * Transform the use variables before serialization.
      *
-     * @var ?Closure $transformUseVariables Holds the closure for transform the variable before serializatin or null.
+     * @var ?Closure $transformUseVariables Holds the closure for transforming the variable before serialization or null.
      */
     public static ?Closure $transformUseVariables = null;
 
@@ -85,14 +88,14 @@ class Native implements SerializableInterface
     /**
      * The closure's code.
      *
-     * @var array|string|null $code Holds the closuee code or null.
+     * @var array|string|null $code Holds the closure code or null.
      */
     protected array|string|null $code;
 
     /**
      * The closure's reference.
      *
-     * @var string $reference Holds thee closure reference.
+     * @var string $reference Holds the closure reference.
      */
     protected string $reference;
 
@@ -113,7 +116,7 @@ class Native implements SerializableInterface
     /**
      * Creates a new serializable closure instance.
      *
-     * @param  Closure  $closure Holds the closdure object.
+     * @param  Closure  $closure Holds the closure object.
      * @return void
      */
     public function __construct( Closure $closure )
@@ -124,7 +127,7 @@ class Native implements SerializableInterface
     /**
      * @inheritdoc
      *
-     * @return mixed
+     * @return mixed Return the result of the closure invocation.
      */
     public function __invoke() : mixed
     {
@@ -134,7 +137,7 @@ class Native implements SerializableInterface
     /**
      * @inheritdoc
      *
-     * @return Closure Return the Closure.
+     * @return Closure Return the Closure instance.
      */
     public function getClosure() : Closure
     {
@@ -244,10 +247,10 @@ class Native implements SerializableInterface
     }
 
     /**
-     * Ensures the given closures are serializable.
+     * Ensures that the given closures are serializable, wrapping them with the appropriate class if needed.
      *
-     * @param  mixed        $data
-     * @param  ClosureScope $storage
+     * @param  mixed        $data    Holds the data containing closures to be wrapped.
+     * @param  ClosureScope $storage Holds the closure storage instance.
      * @return void
      */
     public static function wrapClosures( mixed &$data, ClosureScope $storage) : void
@@ -333,7 +336,7 @@ class Native implements SerializableInterface
     /**
      * Gets the closure's reflector.
      *
-     * @return ReflectionClosure
+     * @return ReflectionClosure The reflection instance for the closure.
      */
     public function getReflector() : ReflectionClosure
     {
@@ -345,10 +348,11 @@ class Native implements SerializableInterface
         return $this->reflector;
     }
 
+
     /**
      * Internal method used to map closure pointers.
      *
-     * @param  mixed  $data
+     * @param  mixed  $data Holds the data to map pointers.
      * @return void
      */
     protected function mapPointers( mixed &$data ) : void
@@ -434,11 +438,10 @@ class Native implements SerializableInterface
             } while ( $reflection = $reflection->getParentClass() );
         }
     }
-
     /**
-     * Internal method used to map closures by reference.
+     * Internal method used to map closures by reference within the data.
      *
-     * @param  mixed  $data
+     * @param  mixed  $data Holds the data to map by reference.
      * @return void
      */
     protected function mapByReference( mixed &$data )

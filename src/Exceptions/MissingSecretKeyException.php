@@ -26,6 +26,9 @@ use Exception;
 /**
  * Missing secret key exception class.
  *
+ * The `MissingSecretException' class thrown when a serializable closure is missing the
+ * required secret key.
+ *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @subpackage  Omega\SerializableClosure\Exceptions
@@ -38,9 +41,9 @@ use Exception;
 class MissingSecretKeyException extends Exception
 {
     /**
-     * Create a new exception instance.
+     * MissingSecretKeyException constructor.
      *
-     * @param  string  $message Holds the Exception message to throw.
+     * @param  string $message Holds the exception message to throw.
      * @return void
      */
     public function __construct( string $message = 'No serializable closure secret key has been specified.' )

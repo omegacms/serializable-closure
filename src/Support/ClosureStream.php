@@ -30,6 +30,9 @@ use AllowDynamicProperties;
 /**
  * Closure stream class.
  *
+ * The `ClosureStem` class manages a stream for serializable closures,
+ * registering a custom stream.
+ * *
  * @category    Omega
  * @package     Omega\SerializableClosure
  * @subpackage  Omega\SerializableClosure\Support
@@ -75,13 +78,13 @@ class ClosureStream
     protected $pointer = 0;
 
     /**
-     * Opens file or URL.
+     * Opens a file or URL.
      *
-     * @param  string     $path
-     * @param  string     $mode
-     * @param  string|int $options
-     * @param  ?string    $openedPath
-     * @return bool
+     * @param  string     $path       Holds the path to the file or URL.
+     * @param  string     $mode       Holds the mode used to open the file or URL.
+     * @param  string|int $options    Holds additional flags set by the streams API.
+     * @param  ?string    $openedPath If passed, should be set to the full path of the file/resource that was actually opened.
+     * @return bool Return true if open strem, false if not.
      */
     public function stream_open( string $path, string $mode, $options, ?string &$openedpath ) :bool
     {
@@ -92,10 +95,10 @@ class ClosureStream
     }
 
     /**
-     * Read from stream.
+     * Reads from the stream.
      *
-     * @param  int $count
-     * @return string
+     * @param  int $count Holds the number of bytes to read from the stream.
+     * @return string Returns the read string.
      */
     public function stream_read( int $count ) : string
     {
@@ -109,7 +112,7 @@ class ClosureStream
     /**
      * Tests for end-of-file on a file pointer.
      *
-     * @return bool
+     * @return bool Return true if test passed, false if not.
      */
     public function stream_eof() : bool
     {
@@ -119,10 +122,10 @@ class ClosureStream
     /**
      * Change stream options.
      *
-     * @param  int $option
-     * @param  int $arg1
-     * @param  int $arg2
-     * @return bool
+     * @param  int $option Holds the option to set.
+     * @param  int $arg1   Holds the first argument.
+     * @param  int $arg2   Holds the second argument.
+     * @return bool Returns true on success or false on failure.
      */
     public function stream_set_option( int $option, int $arg1, int $arg2 ) : bool
     {
@@ -132,7 +135,7 @@ class ClosureStream
     /**
      * Retrieve information about a file resource.
      *
-     * @return array|bool
+     * @return array|bool Returns an array with information about the stream, or false on failure.
      */
     public function stream_stat() : array|bool
     {
@@ -146,9 +149,9 @@ class ClosureStream
     /**
      * Retrieve information about a file.
      *
-     * @param  string $path
-     * @param  int    $flags
-     * @return array|bool
+     * @param  string $path  Holds the path to the file or URL.
+     * @param  int    $flags Holds additional flags set by the streams API.
+     * @return array|bool Returns an array with information about the stream, or false on failure.
      */
     public function url_stat( string $path, int $flags ) : array|bool
     {
@@ -160,11 +163,11 @@ class ClosureStream
     }
 
     /**
-     * Seeks to specific location in a stream.
+     * Seeks to a specific location in a stream.
      *
-     * @param  int $offset
-     * @param  int $whence
-     * @return bool
+     * @param  int $offset Holds the stream offset.
+     * @param  int $whence Holds the reference position.
+     * @return bool Returns true on success or false on failure.
      */
     public function stream_seek( int $offset, int $whence = SEEK_SET ) : bool
     {
@@ -194,7 +197,7 @@ class ClosureStream
     /**
      * Retrieve the current position of a stream.
      *
-     * @return int
+     * @return int Returns the current position of the stream.
      */
     public function stream_tell() : int
     {
