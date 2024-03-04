@@ -81,7 +81,7 @@ $unserialized = unserialize( $serialized )->getClosure();
 echo $unserialized( 'hello' ); // Output: HELLO
 ```
 
-Example 3: Using `SerializableClosure` with `Signing` and anonymous functions.
+Example 3: Using `SerializableClosure` with `Signing` and `anonymous functions`.
 
 ```php
 use Omega\SerializableClosure\SerializableClosure;
