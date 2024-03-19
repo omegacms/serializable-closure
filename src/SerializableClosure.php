@@ -16,7 +16,7 @@ declare( strict_types = 1 );
 /**
  * @namespace
  */
-namespace Omega\SerializableClosure;;;;
+namespace Omega\SerializableClosure;
 
 /**
  * @use
