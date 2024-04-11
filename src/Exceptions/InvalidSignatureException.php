@@ -26,7 +26,7 @@ use Exception;
 /**
  * Invalid signature exception class.
  *
- * THe `InvalidSignatursException` clss thrown when the signature of a serialized closure
+ * THe `InvalidSignaturesException` class thrown when the signature of a serialized closure
  * is invalid or modified.
  *
  * @category    Omega

@@ -29,13 +29,13 @@ use function is_object;
 use function spl_object_hash;
 use Closure;
 use DateTimeInterface;
-use Omega\SerializableClosure\Serializers\SerializableInterface;
 use Omega\SerializableClosure\SerializableClosure;
 use Omega\SerializableClosure\Support\ClosureScope;
 use Omega\SerializableClosure\Support\ClosureStream;
 use Omega\SerializableClosure\Support\ReflectionClosure;
 use Omega\SerializableClosure\Support\SelfReference;
 use Omega\SerializableClosure\UnsignedSerializableClosure;
+use ReflectionException;
 use ReflectionObject;
 use stdClass;
 use UnitEnum;
@@ -44,7 +44,7 @@ use UnitEnum;
  * Native class for serializing closures without signature verification.
  *
  * The `Native` class implements the SerializableInterface and provides
- * functionality for serializing and unserializing closures.
+ * functionality for serializing and un serializing closures.
  *
  * @category    Omega
  * @package     Omega\SerializableClosure
@@ -148,6 +148,7 @@ class Native implements SerializableInterface
      * Get the serializable representation of the closure.
      *
      * @return array Return an array of serializable representation of the closure.
+     * @throws ReflectionException
      */
     public function __serialize() : array
     {
@@ -252,6 +253,7 @@ class Native implements SerializableInterface
      * @param  mixed        $data    Holds the data containing closures to be wrapped.
      * @param  ClosureScope $storage Holds the closure storage instance.
      * @return void
+     * @throws ReflectionException
      */
     public static function wrapClosures( mixed &$data, ClosureScope $storage) : void
     {
@@ -337,6 +339,7 @@ class Native implements SerializableInterface
      * Gets the closure's reflector.
      *
      * @return ReflectionClosure The reflection instance for the closure.
+     * @throws ReflectionException
      */
     public function getReflector() : ReflectionClosure
     {
@@ -443,8 +446,9 @@ class Native implements SerializableInterface
      *
      * @param  mixed  $data Holds the data to map by reference.
      * @return void
+     * @throws ReflectionException
      */
-    protected function mapByReference( mixed &$data )
+    protected function mapByReference( mixed &$data ) : void
     {
         if ( $data instanceof Closure ) {
             if ( $data === $this->closure) {

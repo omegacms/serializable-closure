@@ -48,14 +48,15 @@ use function is_array;
 use function is_null;
 use function is_string;
 use function sprintf;
+use function str_contains;
 use function str_replace;
-use function strpos;
 use function strtolower;
 use function time;
 use function token_get_all;
 use function trim;
 use function var_export;
 use Closure;
+use ReflectionException;
 use ReflectionFunction;
 
 /**
@@ -85,14 +86,14 @@ class ReflectionClosure extends ReflectionFunction
     protected ?string $code = null;
 
     /**
-     * The tokenn extracted from the closure's code.
+     * The token extracted from the closure's code.
      *
-     * @var ?array $tokens Holds the tokenn extracted from the closure's code or null.
+     * @var ?array $tokens Holds the token extracted from the closure's code or null.
      */
     protected ?array $tokens = null;
 
     /**
-     * Hashed name of the closuee.
+     * Hashed name of the closure.
      *
      * @var ?string $hashedName Holds the hashed name of the closure or null.
      */
@@ -101,14 +102,14 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Array of variables used in the closure.
      *
-     * @var ?array $useVariables Holds an array of varibles used in the closure or null.
+     * @var ?array $useVariables Holds an array of variables used in the closure or null.
      */
     protected ?array $useVariables = null;
 
     /**
-     * Indicates whether the closuee is static or not.
+     * Indicates whether the closure is static or not.
      *
-     * @var bool $isStaticClosure Indicates whether the closuee is static or not .
+     * @var bool $isStaticClosure Indicates whether the closure is static or not .
      */
     protected bool $isStaticClosure;
 
@@ -117,21 +118,21 @@ class ReflectionClosure extends ReflectionFunction
      *
      * @var bool $isScopeRequired Indicates whether the closure requires scope.
      */
-    protected $isScopeRequired;
+    protected bool $isScopeRequired;
 
     /**
      * Indicates whether the closure requires binding.
      *
      * @var bool $isBindingRequired Indicates whether the closure requires binding.
      */
-    protected $isBindingRequired;
+    protected bool $isBindingRequired;
 
     /**
      * Indicates whether the closure is a short closure or not.
      *
      * @var bool $isShortClosure Indicates whether the closure is a short closure or not.
      */
-    protected $isShortClosure;
+    protected bool $isShortClosure;
 
     /**
      * Related information array.
@@ -155,7 +156,7 @@ class ReflectionClosure extends ReflectionFunction
     protected static array $functions = [];
 
     /**
-     * Contstants related information array.
+     * Constants related information array.
      *
      * @var array $constants Holds an array of constants-related information.
      */
@@ -174,6 +175,7 @@ class ReflectionClosure extends ReflectionFunction
      * @param  Closure $closure Holds the current reflection closure instance.
      * @param  ?string $code    Holds the code of the closure.
      * @return void
+     * @throws ReflectionException
      */
     public function __construct( Closure $closure, ?string $code = null )
     {
@@ -488,7 +490,7 @@ class ReflectionClosure extends ReflectionFunction
                             $code .= $inside_structure ? $token[1] : $_method;
                             break;
                         case T_COMMENT:
-                            if (substr($token[1], 0, 8) === '#trackme') {
+                            if (str_starts_with($token[1], '#trackme')) {
                                 $timestamp = time();
                                 $code .= '/**' . PHP_EOL;
                                 $code .= '* Date      : ' . date(DATE_W3C, $timestamp) . PHP_EOL;
@@ -668,7 +670,7 @@ class ReflectionClosure extends ReflectionFunction
                             if ($isShortClosure) {
                                 $open++;
                             }
-                            if ($context === 'new' || false !== strpos($id_name, '\\')) {
+                            if ($context === 'new' || str_contains($id_name, '\\')) {
                                 if ($id_start_ci === 'self' || $id_start_ci === 'static') {
                                     if (!$inside_structure) {
                                         $isUsingScope = true;
@@ -712,7 +714,7 @@ class ReflectionClosure extends ReflectionFunction
                                     if (!$inside_structure) {
                                         $isUsingScope = $token[0] === T_DOUBLE_COLON;
                                     }
-                                } elseif (!(\PHP_MAJOR_VERSION >= 7 && in_array($id_start_ci, $builtin_types))) {
+                                } elseif (!(PHP_MAJOR_VERSION >= 7 && in_array($id_start_ci, $builtin_types))) {
                                     if ($classes === null) {
                                         $classes = $this->getClasses();
                                     }
@@ -762,7 +764,7 @@ class ReflectionClosure extends ReflectionFunction
                                         if (!$inside_structure && !$id_start_ci === 'static') {
                                             $isUsingScope = true;
                                         }
-                                    } elseif (!(\PHP_MAJOR_VERSION >= 7 && in_array($id_start_ci, $builtin_types))) {
+                                    } elseif (!(PHP_MAJOR_VERSION >= 7 && in_array($id_start_ci, $builtin_types))) {
                                         if ($classes === null) {
                                             $classes = $this->getClasses();
                                         }
@@ -862,19 +864,16 @@ class ReflectionClosure extends ReflectionFunction
         }
 
         // PHP 8
-        if (\PHP_MAJOR_VERSION === 8) {
+        if (PHP_MAJOR_VERSION === 8) {
             return ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void', 'object', 'mixed', 'false', 'null'];
         }
 
         // PHP 7
-        switch (\PHP_MINOR_VERSION) {
-            case 0:
-                return ['array', 'callable', 'string', 'int', 'bool', 'float'];
-            case 1:
-                return ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void'];
-            default:
-                return ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void', 'object'];
-        }
+        return match ( PHP_MINOR_VERSION ) {
+            0       => ['array', 'callable', 'string', 'int', 'bool', 'float'],
+            1       => ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void'],
+            default => ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void', 'object'],
+        };
     }
 
     /**
@@ -935,7 +934,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Checks if access to the scope is required.
      *
-     * @return bool Return true if the access to the scope is requird, false if not.
+     * @return bool Return true if the access to the scope is required, false if not.
      */
     public function isScopeRequired() : bool
     {
@@ -963,7 +962,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Get the file tokens.
      *
-     * @return array Return an arry of file tokens.
+     * @return array Return an array of file tokens.
      */
     protected function getFileTokens() : array
     {

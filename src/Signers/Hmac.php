@@ -58,7 +58,7 @@ class Hmac implements SignerInterface
     /**
      * @inheritdoc
      *
-     * @param  string $serializable Holds the serializable data to be signed.
+     * @param  string $serialized Holds the serializable data to be signed.
      * @return array Return an array containing the signature.
      */
     public function sign( string $serialized ) : array
